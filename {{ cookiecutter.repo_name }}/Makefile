@@ -11,7 +11,7 @@ BUCKET = {{ cookiecutter.s3_bucket }}
 #################################################################################
 
 requirements:
-	pip install -q -r requirements.txt
+	conda create -n {{ cookiecutter.project_name }} --file requirements.txt
 
 data: requirements
 	python src/data/make_dataset.py
