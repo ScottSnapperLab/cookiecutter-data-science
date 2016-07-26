@@ -10,10 +10,10 @@ BUCKET = {{ cookiecutter.s3_bucket }}
 # COMMANDS                                                                      #
 #################################################################################
 
-requirements:
-	conda create -n {{ cookiecutter.project_name }} --file requirements.txt
+environment:
+	conda create -n {{ cookiecutter.conda_env_name }} --file requirements.txt
 
-data: requirements
+data: environment
 	python src/python/data/make_dataset.py
 
 clean:
@@ -27,7 +27,3 @@ sync_data_to_s3:
 
 sync_data_from_s3:
 	aws s3 sync s3://$(BUCKET)/data/ data/
-
-#################################################################################
-# PROJECT RULES                                                                 #
-#################################################################################

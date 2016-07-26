@@ -4,6 +4,7 @@
 
     "project_name": "project_name",
     "repo_name": "{{ cookiecutter.project_name|replace(' ', '_') }}",
+    "conda_env_name": "conda_env_name",
     "description": "A short description of the project.",
     "version": "0.0.1",
     "year": "2016",
