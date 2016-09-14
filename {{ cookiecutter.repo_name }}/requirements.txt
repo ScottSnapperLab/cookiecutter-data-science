@@ -16,6 +16,11 @@ pip
 
 # Packages specific to your pipeline
 jupyter
+jupyter_nbextensions_configurator
+widgetsnbextension
+jupyter_contrib_nbextensions
+pandoc  
+
 ipython
 seaborn
 pandas
