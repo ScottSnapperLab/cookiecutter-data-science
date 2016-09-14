@@ -66,10 +66,11 @@ target/
 # Pycharm
 .idea
 
+# Snakemake
+.snakemake/
+
 # IPython NB Checkpoints
 .ipynb_checkpoints/
 
-# exclude PROCESSED data from source control by default
-# /data/
-/data/interim
-/data/processed
+# exclude data from source control by default
+/data/
