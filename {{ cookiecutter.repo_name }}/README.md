@@ -15,7 +15,6 @@ Project Organization
 ├── docs                   <- A default Sphinx project; see sphinx-doc.org for details
 ├── github                 <- Contains a script for creating and pushing to github
 ├── LICENSE
-├── main.snake             <- Snakemake file for reproducing a full pipeline
 ├── Makefile               <- Makefile with commands to provision a Conda environment and register
 │                             the environment's kernel with Jupyter
 ├── models                 <- Trained and serialized models, model predictions, or model summaries
@@ -27,6 +26,7 @@ Project Organization
 │   └── figures            <- Generated graphics and figures to be used in reporting
 ├── requirements.txt       <- The requirements file for reproducing the analysis environment.
 ├── setup.py               <- Allows installing this project's python code for Notebook importation
+├── Snakefile              <- Snakemake file for reproducing a full pipeline
 ├── src                    <- Source code for use in this project.
 │   ├── python
 │   │   ├── data           <- Code to download or generate data
