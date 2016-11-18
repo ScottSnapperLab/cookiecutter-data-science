@@ -12,18 +12,11 @@ setuptools.setup(
     description="{{ cookiecutter.description }}",
     # long_description=open('README.rst').read(),
 
-    packages=setuptools.find_packages('src/python'),
+    packages=setuptools.find_packages('src'),
+    package_dir={"": "src"},
 
 
-    install_requires=["click",
-                      "munch",
-                      "seaborn",
-                      "pandas",
-                      "numexpr",
-                      "numpy",
-                      "xlrd",
-                      "xlwt",
-                      ],
+    install_requires=[],
 
     classifiers=[
         'Development Status :: 2 - Pre-Alpha',
@@ -32,4 +25,10 @@ setuptools.setup(
         'Programming Language :: Python :: 3.4',
         'Programming Language :: Python :: 3.5',
     ],
+
+    entry_points={
+    "console_scripts": [
+        "{{ cookiecutter.conda_env_name }} = {{ cookiecutter.project_name }}.cli.main:run",
+        ]
+    },
 )
