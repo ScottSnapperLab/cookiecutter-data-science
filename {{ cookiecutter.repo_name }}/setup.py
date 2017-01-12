@@ -2,7 +2,7 @@
 import setuptools
 
 setuptools.setup(
-    name="{{ cookiecutter.conda_env_name }}",
+    name="{{ cookiecutter.project_name }}",
     version="0.0.1",
     url="{{ cookiecutter.github_url }}",
 
@@ -28,7 +28,7 @@ setuptools.setup(
 
     entry_points={
     "console_scripts": [
-        "{{ cookiecutter.conda_env_name }} = {{ cookiecutter.project_name }}.cli.main:run",
+        "{{ cookiecutter.project_name }} = {{ cookiecutter.project_name }}.cli.main:run",
         ]
     },
 )

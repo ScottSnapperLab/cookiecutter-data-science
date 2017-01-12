@@ -1,5 +1,5 @@
 # Use this file to create an environment using:
-# $ conda create --name env_name -c bioconda  --file <this file>
+# $ conda create --name <env_name> -c bioconda -c r -c pandas -c conda-forge -c gusdunn --file <this file>
 
 
 python>=3.5
@@ -13,15 +13,17 @@ jupyter_contrib_nbextensions
 pandoc
 ipython
 
+
 # NEEDED BY CLI
 snakemake>=3.4.2
 click
-synapseclient>=1.5.1
 munch
 ruamel.yaml
 seaborn
 pandas
+engarde
 numexpr
 numpy
 xlrd
 xlwt
+tqdm>=4.10.0
