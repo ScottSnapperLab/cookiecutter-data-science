@@ -11,11 +11,11 @@ __email__ = "{{ cookiecutter.email }}"
 
 
 
-class {{ cookiecutter.project_name.capitalize() }}Error(Exception):
+class {{ cookiecutter.project_name.title().replace('_','') }}Error(Exception):
 
     """Base error class for {{ cookiecutter.project_name }}."""
 
 
-class ValidationError({{ cookiecutter.project_name.capitalize() }}Error):
+class ValidationError({{ cookiecutter.project_name.title().replace('_','') }}Error):
 
     """Raise when a validation/sanity check comes back with unexpected value."""
