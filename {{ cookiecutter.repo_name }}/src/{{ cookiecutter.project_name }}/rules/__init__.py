@@ -2,7 +2,10 @@
 """Provide code supporting the running and automating of Snakemake rules."""
 
 # Imports
+from pathlib import Path
+import inspect
 
+import munch
 
 # Metadata
 __author__ = "{{ cookiecutter.author_name }}"
