@@ -1,5 +1,6 @@
 """Snakemake file."""
 import os
+import inspect
 
 from pathlib import Path
 
@@ -38,6 +39,7 @@ class MyRun(object):
 
         common = cfg["COMMON"]
 
+        self.snakefile = Path(inspect.getfile(inspect.currentframe()))
         self.globals = munch.Munch()
         self.cfg = cfg
         self.name = common["RUN_NAME"]
@@ -46,18 +48,26 @@ class MyRun(object):
                                                            run_name=self.name
                                                            )
                             )
+        self.pretty_names = {}
         self.log_dir = self.out_dir / "logs"
 
 class MyRule(object):
 
     """Manage the initialization and deployment of rule-specific information."""
 
-    def __init__(self, run, name):
+    def __init__(self, run, name, pretty_name=None):
         """Initialize logs, inputs, outputs, params, etc for a single rule."""
         assert isinstance(run, MyRun)
 
+        if pretty_name is None:
+            pretty_name = name
+
         self.run = run
         self.name = name.lower()
+        self.pretty_name = pretty_name
+
+        self.run.pretty_names[self.name] = pretty_name
+
         self.log_dir = run.log_dir / self.name
         self.log = self.log_dir / "{name}.log".format(name=self.name)
         self.out_dir = run.out_dir / self.name
@@ -260,3 +270,92 @@ ALL.append(rules.rule_shell_cmd.output)
 # ---
 rule all:
     input: ALL
+
+# ------------------------- #
+#### DRAW_RULE_GRAPH ####
+DRAW_RULE_GRAPH = MyRule(run=RUN, name="DRAW_RULE_GRAPH")
+
+# params
+DRAW_RULE_GRAPH.p.pretty_names = RUN.pretty_names
+
+# input
+
+# output
+DRAW_RULE_GRAPH.o.rule_graph_dot = str(DRAW_RULE_GRAPH.out_dir / "rule_graph.dot")
+DRAW_RULE_GRAPH.o.recoded_rule_graph_dot = str(DRAW_RULE_GRAPH.out_dir / "recoded_rule_graph.dot")
+DRAW_RULE_GRAPH.o.recoded_rule_graph_svg = str(DRAW_RULE_GRAPH.out_dir / "recoded_rule_graph.svg")
+
+# ---
+rule draw_rule_graph:
+    log:
+        path=str(DRAW_RULE_GRAPH.log)
+
+    params:
+        pretty_names=DRAW_RULE_GRAPH.p.pretty_names,
+
+    input:
+        Snakefile=str(RUN.snakefile.absolute()),
+        config=rules.save_run_config.output,
+
+    output:
+        rule_graph_dot=DRAW_RULE_GRAPH.o.rule_graph_dot,
+        recoded_rule_graph_dot=DRAW_RULE_GRAPH.o.recoded_rule_graph_dot,
+        recoded_rule_graph_svg=DRAW_RULE_GRAPH.o.recoded_rule_graph_svg,
+
+    run:
+        rule_name = RUN.globals.draw_rule
+        shell("snakemake -p -s {input.Snakefile}  --configfile {input.config} "+rule_name+" --rulegraph > {output.rule_graph_dot}")
+
+        dag.recode_graph(dot=output.rule_graph_dot,
+                         new_dot=output.recoded_rule_graph_dot,
+                         pretty_names=RUN.pretty_names,
+                         rules_to_drop=['save_run_config',rule_name],
+                         color="#50D0FF",
+                         use_pretty_names=False)
+
+        shell("dot -Tsvg {output.recoded_rule_graph_dot} -o {output.recoded_rule_graph_svg} -v ; echo ''")
+
+
+# ------------------------- #
+#### DRAW_DAG_GRAPH ####
+DRAW_DAG_GRAPH = MyRule(run=RUN, name="DRAW_DAG_GRAPH")
+
+# params
+DRAW_DAG_GRAPH.p.pretty_names = RUN.pretty_names
+
+# input
+
+# output
+DRAW_DAG_GRAPH.o.dag_graph_dot = str(DRAW_DAG_GRAPH.out_dir / "dag_graph.dot")
+DRAW_DAG_GRAPH.o.recoded_dag_graph_dot = str(DRAW_DAG_GRAPH.out_dir / "recoded_dag_graph.dot")
+DRAW_DAG_GRAPH.o.recoded_dag_graph_svg = str(DRAW_DAG_GRAPH.out_dir / "recoded_dag_graph.svg")
+
+# ---
+rule draw_dag_graph:
+    log:
+        path=str(DRAW_DAG_GRAPH.log)
+
+    params:
+        pretty_names=DRAW_DAG_GRAPH.p.pretty_names,
+
+    input:
+        Snakefile=str(RUN.snakefile.absolute()),
+        config=rules.save_run_config.output,
+
+    output:
+        dag_graph_dot=DRAW_DAG_GRAPH.o.dag_graph_dot,
+        recoded_dag_graph_dot=DRAW_DAG_GRAPH.o.recoded_dag_graph_dot,
+        recoded_dag_graph_svg=DRAW_DAG_GRAPH.o.recoded_dag_graph_svg,
+
+    run:
+        rule_name = RUN.globals.draw_rule
+        shell("snakemake -p -s {input.Snakefile}  --configfile {input.config} "+rule_name+" --dag > {output.dag_graph_dot}")
+
+        dag.recode_graph(dot=output.dag_graph_dot,
+                         new_dot=output.recoded_dag_graph_dot,
+                         pretty_names=RUN.pretty_names,
+                         rules_to_drop=['save_run_config',rule_name],
+                         color="#50D0FF",
+                         use_pretty_names=False)
+
+        shell("dot -Tsvg {output.recoded_dag_graph_dot} -o {output.recoded_dag_graph_svg} -v ; echo ''")
