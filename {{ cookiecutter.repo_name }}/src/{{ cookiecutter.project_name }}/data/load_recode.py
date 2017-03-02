@@ -14,8 +14,8 @@ from munch import Munch, munchify, unmunchify
 import {{ cookiecutter.project_name }}.errors as e
 
 # Metadata
-__author__ = "Gus Dunn"
-__email__ = "w.gus.dunn@gmail.com"
+__author__ = "{{ cookiecutter.author_name }}"
+__email__ = "{{ cookiecutter.email }}"
 
 
 # Functions

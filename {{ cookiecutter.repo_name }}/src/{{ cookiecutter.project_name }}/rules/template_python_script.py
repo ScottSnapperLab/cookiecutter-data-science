@@ -5,6 +5,10 @@ logging.basicConfig(filename=snakemake.log.path,level=logging.INFO)
 import pandas as pd
 
 
+# Metadata
+__author__ = "{{ cookiecutter.author_name }}"
+__email__ = "{{ cookiecutter.email }}"
+
 # functions
 def do_blabla():
     """Do the blabla."""
