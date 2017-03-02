@@ -9,7 +9,7 @@ import logging
 import pandas as pd
 import numpy as np
 
-import munch.Munch as Munch
+from munch import Munch, munchify, unmunchify
 
 import {{ cookiecutter.project_name }}.errors as e
 
