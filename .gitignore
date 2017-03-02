@@ -1,5 +1,8 @@
 docs/site/
 
+# OSX Junk
+.DS_Store
+
 # Testing
 .cache/
 .tox/

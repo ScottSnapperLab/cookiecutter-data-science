@@ -3,7 +3,7 @@
     "email": "w.gus.dunn@gmail.com",
 
     "project_name": "project_name",
-    "repo_name": "{{ cookiecutter.project_name|replace(' ', '_') }}",
+    "repo_name": "{{ cookiecutter.project_name.lower().replace(' ', '_') }}",
     "conda_env_name": "conda_env_name",
     "description": "A short description of the project.",
     "version": "0.0.1",
@@ -15,4 +15,5 @@
     "github_username": "xguse",
     "github_org": "ScottSnapperLab",
     "github_url": "git@github.com:{{cookiecutter.github_org if cookiecutter.github_org else cookiecutter.github_username}}/{{cookiecutter.repo_name}}.git"
+    "python_interpreter": ["python", "python3"]
 }

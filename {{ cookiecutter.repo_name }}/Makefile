@@ -11,6 +11,12 @@ CONDA_ROOT = $(shell conda info --root)
 CONDA_ENV_DIR = $(CONDA_ROOT)/envs/$(CONDA_ENV_NAME)
 CONDA_ENV_PY = $(CONDA_ENV_DIR)/bin/python
 
+ifeq (,$(shell which conda))
+HAS_CONDA=False
+else
+HAS_CONDA=True
+endif
+
 #################################################################################
 # COMMANDS                                                                      #
 #################################################################################
@@ -41,11 +47,14 @@ clean_bytecode:
 	find . -name "__pycache__" -type d -exec rm -r {} \; ; \
 	find . -name "*.pyc" -exec rm {} \;
 
+## Lint using flake8
 lint:
-	flake8 --exclude=lib/,bin/ .
+	flake8 --exclude=lib/,bin/,docs/conf.py .
 
+## Upload Data to S3
 sync_data_to_s3:
 	aws s3 sync data/ s3://$(BUCKET)/data/
 
+## Download Data from S3
 sync_data_from_s3:
 	aws s3 sync s3://$(BUCKET)/data/ data/
