@@ -14,6 +14,6 @@
 
     "github_username": "xguse",
     "github_org": "ScottSnapperLab",
-    "github_url": "git@github.com:{{cookiecutter.github_org if cookiecutter.github_org else cookiecutter.github_username}}/{{cookiecutter.repo_name}}.git"
+    "github_url": "git@github.com:{{cookiecutter.github_org if cookiecutter.github_org else cookiecutter.github_username}}/{{cookiecutter.repo_name}}.git",
     "python_interpreter": ["python", "python3"]
 }
