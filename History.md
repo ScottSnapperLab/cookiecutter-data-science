@@ -1,4 +1,10 @@
 
+
+v2017.03.31.2
+=============
+
+  * fixed cookiecutter json delimiter problem
+
 v2017.03.31.1
 =============
 
