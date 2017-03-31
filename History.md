@@ -1,4 +1,9 @@
 
+v2017.03.31.3
+=============
+
+  * completed improving logging setup and config
+
 
 v2017.03.31.2
 =============
