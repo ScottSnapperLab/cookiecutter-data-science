@@ -20,6 +20,7 @@ import click
 from click import echo
 
 import {{ cookiecutter.project_name }}.cli.config as _config
+from {{ cookiecutter.project_name }}.misc import process_config, update_configs
 import {{ cookiecutter.project_name }}.errors as e
 
 
@@ -29,29 +30,6 @@ __email__ = "{{ cookiecutter.email }}"
 
 HOME_DIR = (Path(os.path.realpath(__file__)).parent / '../../..').resolve()
 
-def update_configs(directory, to_update=None):
-    """Collect, combine, and return all *.yaml files in `directory`."""
-    confs = Path(directory).glob('*.yaml')
-
-    confs = {p.stem.upper(): p for p in confs}
-
-    if to_update is None:
-        to_update = Munch()
-
-
-    for name, conf in confs.items():
-        c = process_config(config=conf)
-        to_update.update(Munch({name: c}))
-
-    return to_update
-
-
-def process_config(config=None):
-    """Prepare single config file."""
-    if config is None:
-        return Munch()
-    else:
-        return munchify(yaml.load(config.open()))
 
 
 def setup_logging(conf_dict):
