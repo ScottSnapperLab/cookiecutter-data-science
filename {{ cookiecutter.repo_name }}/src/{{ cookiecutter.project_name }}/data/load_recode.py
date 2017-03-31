@@ -2,6 +2,9 @@
 """Provide logic to import, parse, and recode project data into usable structures for analysis."""
 
 # Imports
+import logging
+log = logging.getLogger(__name__)
+
 import os
 from pathlib import Path
 import logging
