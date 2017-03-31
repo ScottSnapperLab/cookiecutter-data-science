@@ -2,6 +2,10 @@
 """Provide command line interface to {{ cookiecutter.project_name }}."""
 
 # Imports
+import logging.config
+import logging
+log = logging.getLogger(__name__)
+
 import os
 from pathlib import Path
 import datetime as dt
@@ -50,6 +54,10 @@ def process_config(config=None):
         return munchify(yaml.load(config.open()))
 
 
+def setup_logging(conf_dict):
+    """Setup logging configurations."""
+    logging.config.dictConfig(config=conf_dict)
+    log.debug(msg='Setup logging configurations.')
 
 @click.group(invoke_without_command=True)
 @click.option('-c', '--config', default=None,
@@ -69,12 +77,17 @@ def run(ctx=None, config=None, home=None):
     ctx.obj.CONFIG = Munch()
 
     top_lvl_confs = HOME_DIR / 'configs'
+    
+    # Load the factory_resets/logging.yaml as an absolute fall-back logging config
+    ctx.obj.CONFIG.LOGGING = process_config(config=top_lvl_confs / 'factory_resets/logging.yaml')
 
     ctx.obj.CONFIG = update_configs(directory=top_lvl_confs, to_update=ctx.obj.CONFIG)
 
     if config:
         ctx.obj.CONFIG = update_configs(directory=config, to_update=ctx.obj.CONFIG)
-
+        
+    setup_logging(conf_dict=ctx.obj.CONFIG.LOGGING)
+    
     if home:
         print(HOME_DIR)
         exit(0)

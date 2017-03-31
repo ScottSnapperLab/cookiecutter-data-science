@@ -2,6 +2,8 @@
 """Provide error classes for {{ cookiecutter.project_name }}."""
 
 # Imports
+import logging
+log = logging.getLogger(__name__)
 
 
 # Metadata
