@@ -45,24 +45,24 @@ ALL = []
 
 
 ############ BEGIN PIPELINE RULES ############
-# ------------------------- #
-#### SAVE_RUN_CONFIG ####
-SAVE_RUN_CONFIG = SnakeRule(run=RUN, name="SAVE_RUN_CONFIG")
-SAVE_RUN_CONFIG.o.file = RUN.out_dir / "{NAME}.yaml".format(NAME=RUN.name)
-
-
-
-rule save_run_config:
-    input:
-    output:
-        file=str(SAVE_RUN_CONFIG.o.file)
-
-    run:
-        with open(output.file, 'w') as cnf_out:
-            cnf_out.write(ORIGINAL_CONFIG_AS_STRING)
-
-PRE.append(rules.save_run_config.output)
-ALL.append(rules.save_run_config.output)
+# # ------------------------- #
+# #### SAVE_RUN_CONFIG ####
+# SAVE_RUN_CONFIG = SnakeRule(run=RUN, name="SAVE_RUN_CONFIG")
+# SAVE_RUN_CONFIG.o.file = RUN.out_dir / "{NAME}.yaml".format(NAME=RUN.name)
+#
+#
+#
+# rule save_run_config:
+#     # input:
+#     output:
+#         file=str(SAVE_RUN_CONFIG.o.file)
+#
+#     run:
+#         with open(output.file, 'w') as cnf_out:
+#             cnf_out.write(ORIGINAL_CONFIG_AS_STRING)
+#
+# PRE.append(rules.save_run_config.output)
+# ALL.append(rules.save_run_config.output)
 
 
 
