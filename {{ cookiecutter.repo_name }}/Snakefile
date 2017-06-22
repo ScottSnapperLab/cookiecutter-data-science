@@ -110,6 +110,11 @@ ALL.append(EXAMPLE_RULE_FILTER_SUBJECTS_VCFS.o.subjects_filtered_vcf_expd)
 rule all:
     input: ALL
 
+#### PRE ####
+# ---
+rule pre:
+    input: PRE
+
 
 # ------------------------- #
 #### DRAW_RULE_GRAPH ####
