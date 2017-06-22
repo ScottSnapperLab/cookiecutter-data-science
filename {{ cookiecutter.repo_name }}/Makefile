@@ -26,7 +26,7 @@ serve_nb:
 	jupyter notebook --notebook-dir notebooks
 
 install:
-	conda create -n $(CONDA_ENV_NAME) --file requirements.txt --yes ; \
+	conda create -n $(CONDA_ENV_NAME) --no-chan-pri --file requirements.txt --yes ; \
 	source activate $(CONDA_ENV_NAME); \
 	ipython kernel install --user --name $(CONDA_ENV_NAME) --display-name "$(CONDA_ENV_NAME)"; \
 	pip install -e .
