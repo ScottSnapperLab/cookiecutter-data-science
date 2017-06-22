@@ -10,6 +10,9 @@ jupyter
 jupyter_nbextensions_configurator
 widgetsnbextension
 jupyter_contrib_nbextensions
+autopep8         # needed for extra jupyter extentions
+pyflakes
+yapf             # needed for extra jupyter extentions
 pandoc
 ipython
 scipy
