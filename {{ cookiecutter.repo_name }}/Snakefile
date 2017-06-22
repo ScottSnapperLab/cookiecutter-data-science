@@ -21,7 +21,7 @@ sns.set_style("whitegrid")
 import munch
 
 
-import {{ cookiecutter.project_name }}.rules import pathify_by_key_ends, SnakeRule, SnakeRun
+from {{ cookiecutter.project_name }}.rules import pathify_by_key_ends, SnakeRule, SnakeRun, recode_graph
 
 
 # Metadata
@@ -117,6 +117,7 @@ DRAW_RULE_GRAPH = SnakeRule(run=RUN, name="DRAW_RULE_GRAPH")
 
 # params
 DRAW_RULE_GRAPH.p.pretty_names = RUN.pretty_names
+# DRAW_RULE_GRAPH.p.use_pretty_names = config.COMMON.DRAW_PRETTY_NAMES
 
 # input
 
@@ -132,10 +133,11 @@ rule draw_rule_graph:
 
     params:
         pretty_names=DRAW_RULE_GRAPH.p.pretty_names,
+        # use_pretty_names=DRAW_RULE_GRAPH.p.use_pretty_names,
 
     input:
         Snakefile=str(RUN.snakefile.absolute()),
-        config=rules.save_run_config.output,
+        config=str(SAVED_CONFIG),
 
     output:
         rule_graph_dot=DRAW_RULE_GRAPH.o.rule_graph_dot,
@@ -143,10 +145,10 @@ rule draw_rule_graph:
         recoded_rule_graph_svg=DRAW_RULE_GRAPH.o.recoded_rule_graph_svg,
 
     run:
-        rule_name = RUN.globals.draw_rule
+        rule_name = config.COMMON.DRAW_RULE
         shell("snakemake -p -s {input.Snakefile}  --configfile {input.config} "+rule_name+" --rulegraph > {output.rule_graph_dot}")
 
-        dag.recode_graph(dot=output.rule_graph_dot,
+        recode_graph(dot=output.rule_graph_dot,
                          new_dot=output.recoded_rule_graph_dot,
                          pretty_names=RUN.pretty_names,
                          rules_to_drop=['save_run_config',rule_name],
@@ -162,6 +164,7 @@ DRAW_DAG_GRAPH = SnakeRule(run=RUN, name="DRAW_DAG_GRAPH")
 
 # params
 DRAW_DAG_GRAPH.p.pretty_names = RUN.pretty_names
+DRAW_DAG_GRAPH.p.use_pretty_names = config.COMMON.DRAW_PRETTY_NAMES
 
 # input
 
@@ -177,10 +180,11 @@ rule draw_dag_graph:
 
     params:
         pretty_names=DRAW_DAG_GRAPH.p.pretty_names,
+        use_pretty_names=DRAW_DAG_GRAPH.p.use_pretty_names,
 
     input:
         Snakefile=str(RUN.snakefile.absolute()),
-        config=rules.save_run_config.output,
+        config=str(SAVED_CONFIG),
 
     output:
         dag_graph_dot=DRAW_DAG_GRAPH.o.dag_graph_dot,
@@ -188,10 +192,10 @@ rule draw_dag_graph:
         recoded_dag_graph_svg=DRAW_DAG_GRAPH.o.recoded_dag_graph_svg,
 
     run:
-        rule_name = RUN.globals.draw_rule
+        rule_name = config.COMMON.DRAW_RULE
         shell("snakemake -p -s {input.Snakefile}  --configfile {input.config} "+rule_name+" --dag > {output.dag_graph_dot}")
 
-        dag.recode_graph(dot=output.dag_graph_dot,
+        recode_graph(dot=output.dag_graph_dot,
                          new_dot=output.recoded_dag_graph_dot,
                          pretty_names=RUN.pretty_names,
                          rules_to_drop=['save_run_config',rule_name],
