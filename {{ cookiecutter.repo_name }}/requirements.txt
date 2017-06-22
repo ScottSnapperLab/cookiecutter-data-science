@@ -12,6 +12,8 @@ widgetsnbextension
 jupyter_contrib_nbextensions
 pandoc
 ipython
+scipy
+matplotlib
 
 
 # NEEDED BY CLI
