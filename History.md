@@ -1,4 +1,13 @@
 
+v2017.06.22.2
+=============
+
+  * Merged with drivendata/master
+  * Merge pull request #75 from lorey/patch-1
+  * Add directory structure to README, improves #10
+  * Fix self documenting make on Linux, close #67
+  * Add PROJECT_DIR absolute path as variable in Makefile, per #65
+
 v2017.06.22.1
 =============
 
