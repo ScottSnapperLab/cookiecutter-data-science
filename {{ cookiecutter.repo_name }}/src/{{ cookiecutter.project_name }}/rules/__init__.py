@@ -33,17 +33,17 @@ class SnakeRun(object):
 
     """Initialize and manage information common to the whole run."""
 
-    def __init__(self, cfg):
+    def __init__(self, cfg, snakefile):
         """Initialize common information for a run."""
         assert isinstance(cfg, dict)
 
         common = cfg["COMMON"]
 
-        self.snakefile = Path(inspect.getfile(inspect.currentframe()))
+        self.snakefile = snakefile
         self.globals = munch.Munch()
         self.cfg = cfg
         self.name = common["RUN_NAME"]
-        self.d = common["SHARED"]
+        self.d = common["INTERIM_DIR"]
         self.out_dir = Path("{base_dir}/{run_name}".format(base_dir=common["OUT_DIR"],
                                                            run_name=self.name
                                                            )
