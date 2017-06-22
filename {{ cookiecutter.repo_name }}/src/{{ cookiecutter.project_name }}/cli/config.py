@@ -2,9 +2,6 @@
 """Provide functions used in cli.config."""
 
 # Imports
-import logging
-log = logging.getLogger(__name__)
-
 from pathlib import Path
 import datetime as dt
 import shutil

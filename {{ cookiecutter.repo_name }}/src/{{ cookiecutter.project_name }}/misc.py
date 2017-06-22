@@ -10,9 +10,15 @@ from collections import OrderedDict
 
 from pathlib import Path
 import hashlib
+import gzip
+
+import pandas as pd
+import numpy as np
 
 from munch import Munch, munchify, unmunchify
 import ruamel.yaml as yaml
+
+
 
 # Metadata
 __author__ = "{{ cookiecutter.author_name }}"
@@ -20,6 +26,20 @@ __email__ = "{{ cookiecutter.email }}"
 
 
 # Functions
+def load_csv(csv, **kwargs):
+    try:
+        return pd.read_csv(gzip.open(csv), **kwargs)
+        
+    except (pd.io.common.CParserError, OSError):
+        return pd.read_csv(csv, **kwargs)
+    
+    except pd.io.common.EmptyDataError:
+        msg = "File was empty: {f}.".format(f="/".join(Path(csv).parts[-2:]))
+        log.error(msg)
+        raise
+
+
+
 def update_configs(directory, to_update=None):
     """Collect, combine, and return all *.yaml files in `directory`."""
     confs = Path(directory).glob('*.yaml')

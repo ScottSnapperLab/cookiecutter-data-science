@@ -1,4 +1,9 @@
 """Snakemake file."""
+import logging
+log = logging.getLogger(__name__)
+
+from pprint import pprint
+
 import os
 import inspect
 
