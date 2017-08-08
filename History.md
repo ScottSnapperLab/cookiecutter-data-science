@@ -1,4 +1,11 @@
 
+v2017.08.08.2
+=============
+
+  * updated cookiecutter AND project `README`s
+  * removed src/data/* (leftover from previous restructure)
+  * made python3 the default cookiecutter option.
+
 v2017.08.08.1
 =============
 
