@@ -20,24 +20,56 @@ else
 HAS_CONDA=True
 endif
 
+ifeq (${CONDA_DEFAULT_ENV},$(CONDA_ENV_NAME))
+PROJECT_CONDA_ACTIVE=True
+else
+PROJECT_CONDA_ACTIVE=False
+endif
+
+
 #################################################################################
 # COMMANDS                                                                      #
 #################################################################################
+
+error_if_active_conda_env:
+ifeq (True,$(PROJECT_CONDA_ACTIVE))
+$(error "This project's conda env is active." )
+endif
 
 serve_nb:
 	source activate $(CONDA_ENV_NAME); \
 	jupyter notebook --notebook-dir notebooks
 
-install:
-	conda create -n $(CONDA_ENV_NAME) --no-chan-pri --file requirements.txt --yes ; \
-	source activate $(CONDA_ENV_NAME); \
-	ipython kernel install --user --name $(CONDA_ENV_NAME) --display-name "$(CONDA_ENV_NAME)"; \
-	pip install -e .
 
-uninstall:
+install: install_python install_r
+
+uninstall: error_if_active_conda_env uninstall_python
+
+
+install_python:
+ifeq ($(CONDA_ENV_PY), $(shell which python))
+	@echo "Project conda env already installed."
+else
+	conda create -n $(CONDA_ENV_NAME) --file requirements.txt --yes  && \
+	source activate $(CONDA_ENV_NAME) && \
+	python -m ipykernel install --user --name $(CONDA_ENV_NAME) --display-name "$(CONDA_ENV_NAME)" && \
+	pip install -e .
+endif
+
+
+uninstall_python:
 	source activate $(CONDA_ENV_NAME); \
 	rm -rf $$(jupyter --data-dir)/kernels/$(CONDA_ENV_NAME); \
 	rm -rf $(CONDA_ENV_DIR)
+
+
+
+
+install_r:
+	source activate $(CONDA_ENV_NAME) && \
+	conda install --file requirements.r.txt --yes && \
+	rm -rf $(CONDA_ENV_DIR)/share/jupyter/kernels/ir && \
+	R -e "IRkernel::installspec(name = '$(CONDA_ENV_NAME)_R', displayname = '$(CONDA_ENV_NAME)_R')"
 
 github_remote:
 	bash github/push_to_new_remote.sh
