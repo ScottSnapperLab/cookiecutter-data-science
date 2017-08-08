@@ -28,7 +28,7 @@ Project Organization
 ├── setup.py               <- Allows installing this project's python code for Notebook importation
 ├── Snakefile              <- Snakemake file for reproducing a full pipeline
 ├── src                    <- Source code for use in this project.
-│   ├── python
+│   ├── {{cookiecutter.project_name}}
 │   │   ├── data           <- Code to download or generate data
 │   │   ├── features       <- Code to turn raw data into features for modeling
 │   │   ├── models         <- Code to train models and then use trained models to make
