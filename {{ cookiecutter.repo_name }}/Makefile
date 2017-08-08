@@ -14,10 +14,24 @@ CONDA_ROOT = $(shell conda info --root)
 CONDA_ENV_DIR = $(CONDA_ROOT)/envs/$(CONDA_ENV_NAME)
 CONDA_ENV_PY = $(CONDA_ENV_DIR)/bin/python
 
+## Viper stuff
+CONDA_ENV_NAME_VIPER =$(CONDA_ENV_NAME)_viper
+CONDA_ENV_DIR_VIPER = $(CONDA_ROOT)/envs/$(CONDA_ENV_NAME_VIPER)
+VIPER_CONFIGS_DIR = configs/factory_resets/viper
+VIPER_STATIC_SYSTEM_DIR = ${HOME}/.viper_static_files
+VIPER_STATIC_PROJ_DIR = data/external/viper_static_files
+
 ifeq (,$(shell which conda))
 HAS_CONDA=False
 else
 HAS_CONDA=True
+endif
+
+
+ifeq (,$(shell which aria2c))
+HAS_ARIA=False
+else
+HAS_ARIA=True
 endif
 
 ifeq (${CONDA_DEFAULT_ENV},$(CONDA_ENV_NAME))
@@ -75,6 +89,44 @@ github_remote:
 	bash github/push_to_new_remote.sh
 
 
+## Aquire the latest version of the  VIPER RNA-seq Pipeline if needed
+get_viper_static_files:
+ifeq (True,$(HAS_ARIA))
+		@echo ">>> Detected aria2c, starting PARALLEL download."
+		aria2c -d $(VIPER_STATIC_SYSTEM_DIR) -i .viper_static_urls
+
+
+else
+		@echo ">>> Did not detect aria2c, starting serial downloads with wget instead."
+		wget -c  'https://www.dropbox.com/sh/8cqooj05i7rnyou/AADjyXpbADhHUCr_WAscP9MEa/hg19.tar.gz?dl=1'
+		wget -c  'https://www.dropbox.com/sh/8cqooj05i7rnyou/AADUxqgzpcoVyjUcwYb5dhMBa/mm9.tar.gz?dl=1'
+		wget -c  'https://www.dropbox.com/sh/8cqooj05i7rnyou/AABbSIjk9124KZh3IdV6ob31a/snpEff.tar.gz?dl=1'
+endif
+
+
+
+
+# install_viper: clean_viper get_viper_static_files
+install_viper: clean_viper
+	git clone https://bitbucket.org/cfce/viper.git
+	patch -p0 < patches/viper/environment.yml.patch
+
+	conda env create -f viper/envs/environment.yml -n $(CONDA_ENV_NAME_VIPER)
+	ln -s $(VIPER_STATIC_SYSTEM_DIR) $(VIPER_STATIC_PROJ_DIR)
+	ln -s $(VIPER_STATIC_PROJ_DIR) ref_files
+
+	mkdir -p $(VIPER_CONFIGS_DIR)
+	cp viper/config.yaml $(VIPER_CONFIGS_DIR)
+	cp viper/metasheet.csv $(VIPER_CONFIGS_DIR)
+
+clean_viper:
+	rm -rf $$(jupyter --data-dir)/kernels/$(CONDA_ENV_NAME_VIPER)
+	rm -rf $(CONDA_ENV_DIR_VIPER)
+	rm -rf viper
+	rm -rf data/external/viper_static_files
+	rm -rf ref_files
+
+
 ## Install Python Dependencies
 requirements: test_environment
 	pip install -r requirements.txt
@@ -122,6 +174,13 @@ endif
 ## Test python environment is setup correctly
 test_environment:
 	$(PYTHON_INTERPRETER) test_environment.py
+
+#################################################################################
+# Utils                                                                         #
+#################################################################################
+patch_viper_env_yml:
+	diff -Naur viper/envs/environment.yml patches/viper/environment.yml > patches/viper/environment.yml.patch
+
 
 #################################################################################
 # PROJECT RULES                                                                 #
