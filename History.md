@@ -1,4 +1,12 @@
 
+v2017.08.08.1
+=============
+
+  * added viper RNASeq pipeline integration
+  * upgraded Makefile install/uninstall targets + add support for R libs
+  * added viper_static_dir to cookiecutter.json
+  * Amended reqs to support extra jupyter extensions
+
 v2017.06.22.2
 =============
 
