@@ -8,7 +8,7 @@
     "description": "A short description of the project.",
     "version": "0.0.1",
     "year": "2017",
-    
+
     "viper_static_dir": "${HOME}/.viper_static_files",
 
     "open_source_license": ["MIT", "BSD", "Not open source"],
@@ -17,5 +17,5 @@
     "github_username": "xguse",
     "github_org": "ScottSnapperLab",
     "github_url": "git@github.com:{{cookiecutter.github_org if cookiecutter.github_org else cookiecutter.github_username}}/{{cookiecutter.repo_name}}.git",
-    "python_interpreter": ["python", "python3"]
+    "python_interpreter": ["python3", "python"]
 }
