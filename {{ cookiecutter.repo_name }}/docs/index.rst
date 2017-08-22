@@ -1,10 +1,5 @@
-.. {{ cookiecutter.project_name }} documentation master file, created by
-   sphinx-quickstart.
-   You can adapt this file to your liking, but it should at least
-   contain the root `toctree` directive.
-
-{{ cookiecutter.project_name }} documentation!
-==============================================
+Welcome to {{ cookiecutter.project_name }}'s documentation!
+======================================
 
 Contents:
 
@@ -13,8 +8,13 @@ Contents:
 
    getting-started
    commands
-
-
+   readme
+   installation
+   usage
+   modules
+   contributing
+   {% if cookiecutter.create_author_file == 'y' -%}authors
+   {% endif -%}history
 
 Indices and tables
 ==================

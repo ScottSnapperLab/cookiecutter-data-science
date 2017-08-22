@@ -54,7 +54,7 @@ github-create () {
     fi
 
 
-    org="{{cookiecutter.github_org if cookiecutter.github_org else ''}}"
+    org="{{cookiecutter.github_org if cookiecutter.github_org else \"\"}}"
     if [ "$org" = "" ]; then
         echo "[git-create][info]: Creating Github repository '$repo_name' ..."
         curl -u "$username:$token" https://api.github.com/user/repos -d '{"name":"'$repo_name'"}' # > /dev/null 2>&1
