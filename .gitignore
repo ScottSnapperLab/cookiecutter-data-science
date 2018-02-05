@@ -88,9 +88,15 @@ docs/_build/
 ## mpeltonen/sbt-idea plugin
 .idea_modules/
 
+# Other IDEs
+.vscode/
+
 # PyBuilder
 target/
 
 # Cookiecutter
 output/
 python_boilerplate/
+
+# Linting
+.mypy_cache/
