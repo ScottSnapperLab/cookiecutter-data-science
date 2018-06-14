@@ -1,0 +1,17 @@
+python>=3.6
+graphviz>=2.38.0
+snakemake>=3.4.2
+ruamel.yaml
+
+
+# NEEDED BY CLI
+click
+pandas
+numpy
+munch
+seaborn
+numexpr
+numpy
+xlrd
+xlwt
+tqdm>=4.10.0
